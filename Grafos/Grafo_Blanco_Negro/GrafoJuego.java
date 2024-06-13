@@ -110,7 +110,7 @@ public class GrafoJuego {
 
         
 
-        List<Casilla> camino = grafo.camino(c11, c7);
+        List<Casilla> camino = grafo.camino(c11, c20);
 
         for (Casilla casilla : camino) {
             System.out.print(casilla.valor + " ");
