@@ -1,58 +1,110 @@
 package LinkedList.Reemplazar_Por_Secuencia;
 
-public class DoubleLinkedList<T> {
-    DoubleNode<T> first;
+public class DoubleLinkedList
+{
+    DoubleNode<String> first;
 
-    public void addNode(T pData) {
-        if (first == null) {
-            first = new DoubleNode<>(pData);
-            first.next = null;
-            first.prev = null;
-        } else {
-            DoubleNode<T> actual = first;
-            if (actual.next != null) {
-                while (actual.next != null) {
-                    actual = actual.next;
+    public void addInOrden(String elem)
+    {
+        if(first==null)
+        {
+            first=new DoubleNode<>(elem);
+            first.prev=null;
+            first.next=null;
+        }
+        else
+        {
+            DoubleNode<String> act=first;
+            DoubleNode<String> pos=first;
+            boolean enc=false;
+            while (!enc && act!=null)
+            {
+                if(act.data.compareTo(elem)>0)
+                {
+                    enc=true;
                 }
-                actual.next = new DoubleNode<>(pData);
-                actual.next.next = null;
-                actual.next.prev = actual;
-            } else {
-                actual.next = new DoubleNode<>(pData);
-                actual.next.next = null;
-                actual.next.prev = actual;
+                else
+                {
+                    pos = act;
+                    act = act.next;
+                }
             }
-
+            if(enc) //Si se encuentra se mete en su posicion
+            {
+                pos.next = new DoubleNode<>(elem);
+                pos.next.prev=pos;
+                pos.next.next=act;
+                act.prev=pos.next;
+            }
+            else //Si no se encuentra se mete al final
+            {
+                pos.next=new DoubleNode<>(elem);
+                pos.next.prev=pos;
+            }
         }
     }
 
-    public void printNodeList() {
-        if (first == null) {
-            System.out.println("La lista esta vacia");
-        } else {
-            DoubleNode<T> actual = first;
-            while (actual.next != null) {
-                System.out.print(actual.data + ", ");
-                actual = actual.next;
+    public void remove(String elem)
+    {
+        if(first==null){}
+        else
+        {
+            DoubleNode<String> act=first;
+            DoubleNode<String> pos=first;
+            boolean enc=false;
+            while (!enc && act!=null)
+            {
+                if(act.data.compareTo(elem) == 0)
+                {
+                    enc=true;
+                }
+                else
+                {
+                    pos = act;
+                    act = act.next;
+                }
             }
-            System.out.print(actual.data + ".\n");
+            if(enc)
+            {
+                if(act==first) //Primer elemento
+                {
+                    act.next.prev=null;
+                    first=act.next;
+                }
+                else if(act.next==null) //Ultimo elemento
+                {
+                    pos.next=null;
+                }
+                else
+                {
+                    act = act.next;
+                    pos.next = act;
+                    act.prev = pos;
+                }
+            }
         }
     }
 
-    public void reemplazar(Pareja[] parejas) {
-        DoubleLinkedList<T> lista = new DoubleLinkedList<>();
-
-        DoubleNode<T> actual = first;
-
-        while (actual.next != null) {
-            for (Pareja p : parejas) {
-
-                if (p.target == actual.data) {
-                    
-                }
-
+    public void reemplazar(Pareja[] parejas)
+    {
+        for(Pareja p:parejas)
+        {
+            for(String s:p.datos)
+            {
+                addInOrden(s);
             }
+            remove(p.target);
         }
+    }
 
+    public void print()
+    {
+        DoubleNode<String> act=first;
+        while (act!=null)
+        {
+            System.out.print(act.data+", ");
+            act=act.next;
+        }
+        System.out.print("\n");
     }
 }
